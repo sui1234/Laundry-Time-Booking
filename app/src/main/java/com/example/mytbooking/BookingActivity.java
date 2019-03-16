@@ -20,7 +20,6 @@ import java.util.List;
 public class BookingActivity extends AppCompatActivity {
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,23 +27,33 @@ public class BookingActivity extends AppCompatActivity {
 
         RadioGroup radioGroup = findViewById(R.id.radio_group);
 
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // checkedId is the RadioButton selected
 
-                switch(checkedId) {
+                switch (checkedId) {
                     case R.id.button_date:
-                        Log.d("Sui","mydatefragment");
+                        Log.d("Sui", "mydatefragment");
+                        replaceFragment(new DateFragment());
 
                         break;
                     case R.id.button_time:
 
-                        Log.d("Sui","mytimefragment");
+                        Log.d("Sui", "mytimefragment");
+                        replaceFragment(new TimeFragment());
                         break;
                 }
             }
+
+            private void replaceFragment(Fragment fragment) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.commit();
+            }
         });
+
 
     }
 
