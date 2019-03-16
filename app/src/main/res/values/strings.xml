@@ -2,6 +2,9 @@
     <string name="app_name">My TBooking</string>
     <string name="title_home">Home</string>
     <string name="title_profile">Profile</string>
-    <string name="title_mina_bokning">Mina bokningar</string>
-    <string name="title_bokning">Bokning</string>
+    <string name="title_my_booking">Mina bokningar</string>
+    <string name="title_booking">Bokning</string>
+
+    <string name="title_date">Datum</string>
+    <string name="title_time">Tid</string>
 </resources>

@@ -13,7 +13,7 @@
         android:layout_gravity="top|center"
         android:textAlignment="center"
         android:background="#006AA7"
-        android:text="@string/title_mina_bokning"
+        android:text="@string/title_my_booking"
         android:textColor="#FFFFFF"
         android:textSize="34dp" />
 

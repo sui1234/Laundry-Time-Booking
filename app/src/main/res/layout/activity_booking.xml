@@ -13,9 +13,10 @@
         android:layout_gravity="top|center"
         android:textAlignment="center"
         android:background="#006AA7"
-        android:text="@string/title_bokning"
+        android:text="@string/title_booking"
         android:textColor="#FFFFFF"
         android:textSize="34dp" />
+
 
     <FrameLayout
 
@@ -23,7 +24,37 @@
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_navigation"/>
+        android:layout_above="@+id/bottom_navigation">
+
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="60dp">
+
+            <RadioButton
+                android:id="@+id/button_date"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="@string/title_date"
+                style="@style/demoStyle"/>
+            <RadioButton
+                android:id="@+id/button_time"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_height="50dp"
+                android:text="@string/title_time"
+                style="@style/demoStyle"/>
+
+        </RadioGroup>
+
+
+    </FrameLayout>
+
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
