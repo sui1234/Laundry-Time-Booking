@@ -14,7 +14,7 @@ import android.widget.DatePicker;
 
 import java.util.Calendar;
 
-public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class DatePickerFragment extends Fragment /*implements DatePickerDialog.OnDateSetListener*/ {
 
     public final String TAG = DatePickerFragment.class.getSimpleName();
 
@@ -28,7 +28,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     }
 
-
+/*
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -45,5 +45,5 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
-    }
+    }*/
 }

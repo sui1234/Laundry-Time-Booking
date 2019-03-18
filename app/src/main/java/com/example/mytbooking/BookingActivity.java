@@ -1,5 +1,6 @@
 package com.example.mytbooking;
 
+import android.app.DatePickerDialog;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -7,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RadioGroup;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class BookingActivity extends AppCompatActivity {
 
@@ -26,8 +30,11 @@ public class BookingActivity extends AppCompatActivity {
                 switch (checkedId) {
                     case R.id.button_date:
                         Log.d("Sui", "mydatefragment");
-                        DatePickerFragment datePickerFragment=new DatePickerFragment();
-                        datePickerFragment.show(getSupportFragmentManager(),  "datepicker");
+                       // DatePickerFragment datePickerFragment=new DatePickerFragment();
+                        //datePickerFragment.show(getSupportFragmentManager(),  "datepicker");
+
+
+
 
                         replaceFragment(new DatePickerFragment());
 
