@@ -1,21 +1,12 @@
 package com.example.mytbooking;
 
-import android.annotation.SuppressLint;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
 import android.widget.RadioGroup;
-
-import java.util.List;
 
 public class BookingActivity extends AppCompatActivity {
 
@@ -35,7 +26,10 @@ public class BookingActivity extends AppCompatActivity {
                 switch (checkedId) {
                     case R.id.button_date:
                         Log.d("Sui", "mydatefragment");
-                        replaceFragment(new DateFragment());
+                        DatePickerFragment datePickerFragment=new DatePickerFragment();
+                        datePickerFragment.show(getSupportFragmentManager(),  "datepicker");
+
+                        replaceFragment(new DatePickerFragment());
 
                         break;
                     case R.id.button_time:
