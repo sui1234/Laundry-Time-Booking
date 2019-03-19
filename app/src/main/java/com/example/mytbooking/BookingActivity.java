@@ -1,22 +1,24 @@
 package com.example.mytbooking;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.DatePicker;
-import android.widget.Toast;
+import android.widget.TextView;
 
 
 public class BookingActivity extends AppCompatActivity {
 
     DatePicker date;
     int choice;
+    TextView cancelView;
+    TextView saveView;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("WrongViewCast")
@@ -38,51 +40,46 @@ public class BookingActivity extends AppCompatActivity {
     }
 
 
-    private void timeDialog() {
-        final String[] items = {"07.00 - 11.00", "11.00 - 15.00", "15.00 - 19.00","19.00 - 23.00"};
+    private void timeDialog(){
+        View view = getLayoutInflater().inflate(R.layout.dialog_date, null);
+        Dialog myDialog = new TimeDialog(this, 0, 0, view, R.style.DialogTheme);
+        myDialog.setCancelable(true);
+        myDialog.show();
 
-        AlertDialog.Builder timeDialog = new AlertDialog.Builder(BookingActivity.this);
-        timeDialog.setTitle("                         Välj tid");
 
-        timeDialog.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+        cancelView = myDialog.findViewById(R.id.cancel);
+        saveView = myDialog.findViewById(R.id.save);
+
+       View.OnClickListener listener = new View.OnClickListener()
+        {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                choice = which;
-            }
-        });
-        timeDialog.setPositiveButton("Spara", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (choice != -1) {
+            public void onClick(View v)
+            {
+                switch (v.getId())
+                {
+                    case R.id.cancel:
+                        Intent intent = new Intent(BookingActivity.this, BookingActivity.class);
+                        startActivity(intent);
+                        break;
 
-                    Intent intent = new Intent(BookingActivity.this,MainActivity.class);
-                    startActivity(intent);
-                    Toast.makeText(BookingActivity.this,
-                            "Du har valt  " + items[choice],
-                            Toast.LENGTH_SHORT).show();
+                    case R.id.save:
+                        Intent intent1 = new Intent(BookingActivity.this, MainActivity.class);
+                        startActivity(intent1);
+                        break;
 
-
-
+                    default:
+                        break;
                 }
+
             }
-        });
-
-        timeDialog.setNegativeButton("back", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (choice != -1) {
-                    Toast.makeText(BookingActivity.this,
-                            "Du har lämnat tid dialog  ",
-                            Toast.LENGTH_SHORT).show();
+        };
+        cancelView.setOnClickListener(listener);
+        saveView.setOnClickListener(listener);
 
 
 
-                }
-            }
-        });
-        timeDialog.show();
+
     }
-
 
 }
 

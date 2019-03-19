@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BookingActivity"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:context=".BookingActivity">
 
     <LinearLayout
         android:id="@+id/navigation_header_container"
@@ -29,15 +29,20 @@
 
     <DatePicker
         android:id="@+id/date_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="340dp"
+        android:layout_height="511dp"
+        android:layout_above="@+id/bottom_navigation"
         android:layout_below="@+id/navigation_header_container"
-        android:layout_marginTop="40dp"
+        android:layout_gravity="center"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"
+
         android:background="#E4E4E4">
 
 
     </DatePicker>
+
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"

@@ -8,4 +8,5 @@
     <string name="title_date">Datum</string>
     <string name="title_time">Tid</string>
     <string name="save">Spara</string>
+    <string name="cancel">Cancel</string>
 </resources>
