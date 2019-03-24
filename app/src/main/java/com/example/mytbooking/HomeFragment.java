@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class HomeFragment extends Fragment {
+    TextView bookingDate;
+
 
     @Nullable
     @Override
@@ -24,6 +28,13 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+//send selecteddate to minabooking side.
+        bookingDate = plusView.findViewById(R.id.booking_date);
+        Intent intent = getActivity().getIntent();
+        String date = intent.getStringExtra("date");
+        bookingDate.setText(date);
+
         return plusView;
 
 

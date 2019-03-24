@@ -8,6 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="CalenderViewCustom" parent="Theme.AppCompat">
+        <item name="colorAccent">#FECC00</item>
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="android:textColorPrimary">#FECC00</item>
+    </style>
+
     <style name="demoStyle">
         <item name="android:button">@null</item>
         <item name="android:textSize">22sp</item>
@@ -27,6 +33,13 @@
     </style>
 
 
+    <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Medium">
+        <item name="android:textColor">@android:color/black</item>
+
+    </style>
+    <style name="CalenderViewWeekCustomText" parent="android:TextAppearance.DeviceDefault.Medium">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
 
 
 

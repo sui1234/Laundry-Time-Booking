@@ -16,6 +16,13 @@
         android:text="@string/title_my_booking"
         android:textColor="#FFFFFF"
         android:textSize="34dp" />
+    <TextView
+        android:id="@+id/booking_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+
+        android:layout_gravity="center"/>
 
 
 
@@ -31,6 +38,8 @@
         android:src="@drawable/ic_add_black_24dp"
         app:elevation="6dp"
         app:fabSize="normal" />
+
+
 
 
 </FrameLayout>

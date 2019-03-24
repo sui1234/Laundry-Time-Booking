@@ -24,6 +24,7 @@
 
 
         <RadioGroup
+            android:id="@+id/radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tip"
@@ -33,6 +34,7 @@
             >
 
             <RadioButton
+                android:id="@+id/first"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="07.00 - 11.00"
@@ -40,6 +42,7 @@
                 android:padding="5dp"/>
 
             <RadioButton
+                android:id="@+id/second"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="11.00 - 15.00"
@@ -47,6 +50,7 @@
                 android:padding="5dp"/>
 
             <RadioButton
+                android:id="@+id/third"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="15.00 - 19.00"
@@ -54,6 +58,7 @@
                 android:padding="5dp"/>
 
             <RadioButton
+                android:id="@+id/fourth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="19.00 - 23.00"
