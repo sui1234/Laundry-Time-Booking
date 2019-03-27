@@ -29,7 +29,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
-//send selecteddate to minabooking side.
+//send selected date to mina booking side.
+
         bookingDate = plusView.findViewById(R.id.booking_date);
         Intent intent = getActivity().getIntent();
         String date = intent.getStringExtra("date");

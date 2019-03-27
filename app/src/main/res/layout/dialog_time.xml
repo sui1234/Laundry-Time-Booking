@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="30dp"
-            android:text="Välj tid"
+            android:text="@string/choose_period"
             android:textColor="#FECC00"
             android:textSize="30dp" />
 
