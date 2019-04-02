@@ -8,5 +8,10 @@
     android:useLevel="false">
     <solid android:color="@color/colorAccent"/>
 
+    <style android:name="TextAppearance.MyCustomDay" >
+        <item android:name="android:textSize">12sp</item>
+        <item android:name="android:textColor">@color/my_custom_day_color</item>
+    </style>
+
 
 </shape>

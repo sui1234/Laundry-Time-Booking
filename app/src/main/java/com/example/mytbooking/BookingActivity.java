@@ -7,9 +7,12 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.RadioButton;
@@ -17,6 +20,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -38,11 +44,16 @@ public class BookingActivity extends AppCompatActivity {
 
     RadioGroup radioGroup;
     RadioButton radioButton;
-    String choosedTime;
+
 
     int year;
     int month;
     int day;
+    String date;
+    String name;
+    String selectedTime;
+
+    FirebaseFirestore db;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("WrongViewCast")
@@ -50,6 +61,10 @@ public class BookingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
+
+
+        FirebaseApp.initializeApp(this);
+        db = FirebaseFirestore.getInstance();
 
 
         calendarView = findViewById(R.id.calendar);
@@ -78,30 +93,49 @@ public class BookingActivity extends AppCompatActivity {
         });
 
 
-        /*calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-                selectedDate = year + " - " + (month + 1) + " -" + dayOfMonth;
-                Log.d("Sui", "dialog");
-                timeDialog();
-            }
-        });*/
+
 
 
     }
+// bottomnavigation
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            Fragment selectedFragment = null;
+            switch (menuItem.getItemId()) {
+                case R.id.nav_home:
+                    selectedFragment = new HomeFragment();
+                    break;
+                case R.id.nav_profile:
+                    selectedFragment = new ProfileFragment();
+                    break;
 
+            }
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, selectedFragment).commit();
+            return true;
+        }
+    };
+
+
+
+    // get date from calendar
     public void getTime() {
         if (selectedDate != null) {
             year = selectedDate.getYear();
-            month = selectedDate.getMonth() + 1; //月份跟系统一样是从0开始的，实际获取时要加1
+            month = selectedDate.getMonth() + 1;
             day = selectedDate.getDay();
+            date = Integer.toString(year) + " - " + Integer.toString(month) + " - " + Integer.toString(day);
 
         }
 
 
     }
 
+    // timeDialog function
     private void timeDialog() {
         View view = getLayoutInflater().inflate(R.layout.dialog_time, null);
         Dialog myDialog = new TimeDialog(this, 0, 0, view, R.style.DialogTheme);
@@ -124,7 +158,7 @@ public class BookingActivity extends AppCompatActivity {
 
                     radioButton = radioGroup.findViewById(checkedId);
 
-                    choosedTime = radioButton.getText().toString();
+                    selectedTime = radioButton.getText().toString();
 
                 }
             });
@@ -144,10 +178,22 @@ public class BookingActivity extends AppCompatActivity {
 
                     case R.id.save:
 
-                        if (year != 0 && choosedTime != null) {
+                        if (year != 0 && selectedTime != null) {
                             Intent intent1 = new Intent(BookingActivity.this, MainActivity.class);
 
-                            intent1.putExtra("date", year + "-" + month + "-" + day + "   " + choosedTime);
+                            intent1.putExtra("date", date + "   " + selectedTime);
+
+                            //when save button is clicked then save date in firestore automatic
+
+                            CollectionReference dbBooking = db.collection("booking");
+
+                            Booking booking = new Booking(name,
+                                    date, selectedTime
+                            );
+
+                            dbBooking.add(booking);
+
+
                             startActivity(intent1);
                             break;
                         }

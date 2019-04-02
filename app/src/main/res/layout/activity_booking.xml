@@ -7,12 +7,13 @@
     android:orientation="horizontal"
     tools:context=".BookingActivity">
 
-    <LinearLayout
-        android:id="@+id/navigation_header_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation">
+        
         <TextView
             android:id="@+id/home_fragment_title"
             android:layout_width="match_parent"
@@ -22,24 +23,29 @@
             android:text="@string/title_booking"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="34dp" />
+            android:textSize="34dp"
+            />
 
-    </LinearLayout>
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="80dp"
 
-    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-        android:id="@+id/calendar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        app:mcv_showOtherDates="all"
-        app:mcv_arrowColor="@color/colorAccent"
-        app:mcv_headerTextAppearance="@style/Base.TextAppearance.AppCompat.Large"
-        app:mcv_weekDayTextAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        app:mcv_dateTextAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            app:mcv_showOtherDates="all"
+            app:mcv_arrowColor="@color/colorAccent"
+            app:mcv_headerTextAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            app:mcv_weekDayTextAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            app:mcv_dateTextAppearance="@style/Base.TextAppearance.AppCompat.Medium"
 
-        >
 
-    </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+            >
+
+        </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+
+
+    </FrameLayout>
 
 
     <android.support.design.widget.BottomNavigationView

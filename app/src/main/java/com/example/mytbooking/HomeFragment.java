@@ -19,15 +19,15 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View plusView = inflater.inflate(R.layout.fragment_home,null);
+        View plusView = inflater.inflate(R.layout.fragment_home, null);
         plusView.findViewById(R.id.fab)
                 .setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(),BookingActivity.class);
-                startActivity(intent);
-            }
-        });
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity().getApplicationContext(), BookingActivity.class);
+                        startActivity(intent);
+                    }
+                });
 
 //send selected date to mina booking side.
 

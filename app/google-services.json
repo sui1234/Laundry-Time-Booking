@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "386889658489",
+    "firebase_url": "https://mytbooking-11419.firebaseio.com",
+    "project_id": "mytbooking-11419",
+    "storage_bucket": "mytbooking-11419.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386889658489:android:182d374829574ebf",
+        "android_client_info": {
+          "package_name": "com.example.mytbooking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386889658489-h56m8gl361ia1s1dkvfo3mndg1j08i7r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mytbooking",
+            "certificate_hash": "d020017da9d809a53ea693e66cd5d10d469cc6fa"
+          }
+        },
+        {
+          "client_id": "386889658489-qp0olbbj7lde1ou5opmgsnn6dobi64rm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5KKaVlWQg6uxjvQXO66GKqVjbZRVL1lw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386889658489-qp0olbbj7lde1ou5opmgsnn6dobi64rm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
