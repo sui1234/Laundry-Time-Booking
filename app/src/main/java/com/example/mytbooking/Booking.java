@@ -21,6 +21,7 @@ public class Booking {
     }
 
     public String getDate() {
+
         return date;
     }
 

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_navigation">
-        
+
         <TextView
             android:id="@+id/home_fragment_title"
             android:layout_width="match_parent"

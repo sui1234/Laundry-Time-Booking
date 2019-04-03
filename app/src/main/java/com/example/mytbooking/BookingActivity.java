@@ -20,9 +20,19 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -62,6 +72,12 @@ public class BookingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
 
+        /*FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setTimestampsInSnapshotsEnabled(true)
+                .build();
+        firestore.setFirestoreSettings(settings);*/
+
 
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
@@ -89,6 +105,43 @@ public class BookingActivity extends AppCompatActivity {
                 timeDialog();
                 getTime();
 
+
+                db.collection("booking")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.d("SUI document.getId", document.getId() + " => " + document.getData().get("time")
+                                                .toString().replaceAll(" ","").contains("07.00-11.00"));
+
+
+
+                                        if(document.getData().get("time").toString().replaceAll(" ","").contains("07.00-11.00")){
+                                            Log.d("SUI","07.00 -11.00 is busy" );
+                                        }if(document.getData().get("time").toString().replaceAll(" ","").contains("11.00-15.00")){
+                                            Log.d("SUI","11.00 -15.00 is busy" );
+                                        }if(document.getData().get("time").toString().replaceAll(" ","").contains("15.00-19.00")){
+                                            Log.d("SUI","15.00 -19.00 is busy" );
+                                        }if(document.getData().get("time").toString().replaceAll(" ","").contains("19.00-23.00")){
+                                            Log.d("SUI","19.00 -23.00 is busy" );
+                                        }
+
+
+
+                                        // jämföra time med radiobuttons, om några tider är upptagna, då sätt radiobutton till enable.
+
+                                        //Query queryTime = db.collection("booking").whereEqualTo("time",true);
+
+                                    }
+                                } else {
+                                    Log.d("SUI", "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+
+
             }
         });
 
@@ -100,6 +153,8 @@ public class BookingActivity extends AppCompatActivity {
 
 
     }
+
+
 // bottomnavigation
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -179,6 +234,7 @@ public class BookingActivity extends AppCompatActivity {
                     case R.id.save:
 
                         if (year != 0 && selectedTime != null) {
+                            Log.d("DAVID", "Save");
                             Intent intent1 = new Intent(BookingActivity.this, MainActivity.class);
 
                             intent1.putExtra("date", date + "   " + selectedTime);
@@ -187,11 +243,34 @@ public class BookingActivity extends AppCompatActivity {
 
                             CollectionReference dbBooking = db.collection("booking");
 
-                            Booking booking = new Booking(name,
+                            Booking booking = new Booking("DAVID",
                                     date, selectedTime
                             );
-
                             dbBooking.add(booking);
+
+                           /* Log.d("DAVID", "add bocking: " + booking.name);
+                            dbBooking.add(booking).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Log.d("DAVID", "Success");
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d("DAVID", "Error", e);
+                                }
+                            }).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentReference> task) {
+                                    Log.d("DAVID", "Complete");
+                                }
+                            }).addOnCanceledListener(new OnCanceledListener() {
+                                @Override
+                                public void onCanceled() {
+                                    Log.d("DAVID", "Canceled");
+
+                                }
+                            });*/
 
 
                             startActivity(intent1);
