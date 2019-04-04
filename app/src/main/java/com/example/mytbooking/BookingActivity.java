@@ -38,6 +38,7 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,14 +56,16 @@ public class BookingActivity extends AppCompatActivity {
     RadioGroup radioGroup;
     RadioButton radioButton;
 
-
     int year;
     int month;
     int day;
-    String date;
+
+    String date1;
     String name;
     String selectedTime;
 
+
+    String stringDate;
     FirebaseFirestore db;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -72,11 +75,11 @@ public class BookingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
 
-        /*FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setTimestampsInSnapshotsEnabled(true)
                 .build();
-        firestore.setFirestoreSettings(settings);*/
+        firestore.setFirestoreSettings(settings);
 
 
         FirebaseApp.initializeApp(this);
@@ -98,47 +101,70 @@ public class BookingActivity extends AppCompatActivity {
 
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
-            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull final CalendarDay date, boolean selected) {
 
                 selectedDate = date;
                 Log.d("Sui", "dialog");
+
                 timeDialog();
                 getTime();
 
 
-                db.collection("booking")
+               // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                //stringDate = sdf.format(selectedDate.getDate());
+
+
+                stringDate = Integer.toString(selectedDate.getYear()) + " - " +Integer.toString(selectedDate.getMonth() + 1) + " - " + Integer.toString(selectedDate.getDay());
+
+
+                Query queryTime = db.collection("booking").whereEqualTo("date", stringDate);
+
+
+                queryTime
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
+                                    Log.d("Sui",  "issucesful " + task.getResult().getDocuments());
+
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Log.d("SUI document.getId", document.getId() + " => " + document.getData().get("time")
-                                                .toString().replaceAll(" ","").contains("07.00-11.00"));
+                                        Log.d("SUI document.getId", document.getId() + " => " + document.getData().toString());
 
 
 
-                                        if(document.getData().get("time").toString().replaceAll(" ","").contains("07.00-11.00")){
-                                            Log.d("SUI","07.00 -11.00 is busy" );
-                                        }if(document.getData().get("time").toString().replaceAll(" ","").contains("11.00-15.00")){
-                                            Log.d("SUI","11.00 -15.00 is busy" );
-                                        }if(document.getData().get("time").toString().replaceAll(" ","").contains("15.00-19.00")){
-                                            Log.d("SUI","15.00 -19.00 is busy" );
-                                        }if(document.getData().get("time").toString().replaceAll(" ","").contains("19.00-23.00")){
-                                            Log.d("SUI","19.00 -23.00 is busy" );
-                                        }
+
+                                        if (document.getData().get("time").toString().replaceAll(" ", "").contains("07.00-11.00") == true) {
+
+
+                                            Log.d("Sui",  stringDate + " 07.00 -11.00 is busy");
+
+                                        }else if (document.getData().get("time").toString().replaceAll(" ", "").contains("11.00-15.00") == true) {
+
+
+                                            Log.d("Sui",  stringDate + " 11.00 -15.00 is busy");
+
+                                        }else if (document.getData().get("time").toString().replaceAll(" ", "").contains("15.00-19.00") == true) {
+
+
+                                            Log.d("Sui",  stringDate + " 15.00 -19.00 is busy");
+
+                                        } else if (document.getData().get("time").toString().replaceAll(" ", "").contains("19.00-23.00") == true)
+
+                                            Log.d("Sui", stringDate+ " 19.00 -23.00 is busy");
 
 
 
-                                        // jämföra time med radiobuttons, om några tider är upptagna, då sätt radiobutton till enable.
 
-                                        //Query queryTime = db.collection("booking").whereEqualTo("time",true);
+
 
                                     }
                                 } else {
                                     Log.d("SUI", "Error getting documents: ", task.getException());
                                 }
                             }
+
                         });
 
 
@@ -150,12 +176,10 @@ public class BookingActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
 
-
-
     }
 
 
-// bottomnavigation
+    // bottomnavigation
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -176,14 +200,13 @@ public class BookingActivity extends AppCompatActivity {
     };
 
 
-
     // get date from calendar
     public void getTime() {
         if (selectedDate != null) {
             year = selectedDate.getYear();
             month = selectedDate.getMonth() + 1;
             day = selectedDate.getDay();
-            date = Integer.toString(year) + " - " + Integer.toString(month) + " - " + Integer.toString(day);
+            date1 = Integer.toString(year) + " - " + Integer.toString(month) + " - " + Integer.toString(day);
 
         }
 
@@ -237,14 +260,14 @@ public class BookingActivity extends AppCompatActivity {
                             Log.d("DAVID", "Save");
                             Intent intent1 = new Intent(BookingActivity.this, MainActivity.class);
 
-                            intent1.putExtra("date", date + "   " + selectedTime);
+                            intent1.putExtra("date", date1 + "   " + selectedTime);
 
                             //when save button is clicked then save date in firestore automatic
 
                             CollectionReference dbBooking = db.collection("booking");
 
                             Booking booking = new Booking("DAVID",
-                                    date, selectedTime
+                                    date1, selectedTime
                             );
                             dbBooking.add(booking);
 
