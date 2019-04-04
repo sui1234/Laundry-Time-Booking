@@ -11,10 +11,13 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -64,9 +67,12 @@ public class BookingActivity extends AppCompatActivity {
     String name;
     String selectedTime;
 
+    View dialogView;
+
 
     String stringDate;
     FirebaseFirestore db;
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("WrongViewCast")
@@ -74,6 +80,7 @@ public class BookingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
+
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
@@ -107,70 +114,11 @@ public class BookingActivity extends AppCompatActivity {
                 Log.d("Sui", "dialog");
 
                 timeDialog();
+
                 getTime();
-
-
-               // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-                //stringDate = sdf.format(selectedDate.getDate());
-
-
-                stringDate = Integer.toString(selectedDate.getYear()) + " - " +Integer.toString(selectedDate.getMonth() + 1) + " - " + Integer.toString(selectedDate.getDay());
-
-
-                Query queryTime = db.collection("booking").whereEqualTo("date", stringDate);
-
-
-                queryTime
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d("Sui",  "issucesful " + task.getResult().getDocuments());
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Log.d("SUI document.getId", document.getId() + " => " + document.getData().toString());
-
-
-
-
-                                        if (document.getData().get("time").toString().replaceAll(" ", "").contains("07.00-11.00") == true) {
-
-
-                                            Log.d("Sui",  stringDate + " 07.00 -11.00 is busy");
-
-                                        }else if (document.getData().get("time").toString().replaceAll(" ", "").contains("11.00-15.00") == true) {
-
-
-                                            Log.d("Sui",  stringDate + " 11.00 -15.00 is busy");
-
-                                        }else if (document.getData().get("time").toString().replaceAll(" ", "").contains("15.00-19.00") == true) {
-
-
-                                            Log.d("Sui",  stringDate + " 15.00 -19.00 is busy");
-
-                                        } else if (document.getData().get("time").toString().replaceAll(" ", "").contains("19.00-23.00") == true)
-
-                                            Log.d("Sui", stringDate+ " 19.00 -23.00 is busy");
-
-
-
-
-
-
-                                    }
-                                } else {
-                                    Log.d("SUI", "Error getting documents: ", task.getException());
-                                }
-                            }
-
-                        });
-
 
             }
         });
-
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -213,23 +161,33 @@ public class BookingActivity extends AppCompatActivity {
 
     }
 
+
+    // set button disabled function
+    public void setButtonDisabled(int i) {
+
+        Log.d("SUI", "button1 is enabled");
+        radioGroup.getChildAt(i).setEnabled(false);
+
+
+    }
+
     // timeDialog function
     private void timeDialog() {
-        View view = getLayoutInflater().inflate(R.layout.dialog_time, null);
-        Dialog myDialog = new TimeDialog(this, 0, 0, view, R.style.DialogTheme);
+        dialogView = getLayoutInflater().inflate(R.layout.dialog_time, null);
+        Dialog myDialog = new TimeDialog(this, 0, 0, dialogView, R.style.DialogTheme);
         myDialog.setCancelable(true);
         myDialog.show();
 
+        checkIsTimeBusy();
 
-        radioGroup = view.findViewById(R.id.radio_group);
+
+        radioGroup = dialogView.findViewById(R.id.radio_group);
 
         Log.d("Sui", "radioButton1");
 
         if (radioGroup != null)
             radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-
                 @Override
-
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
 
                     Log.d("Sui", "radioButton2");
@@ -258,11 +216,15 @@ public class BookingActivity extends AppCompatActivity {
 
                         if (year != 0 && selectedTime != null) {
                             Log.d("DAVID", "Save");
+
+
                             Intent intent1 = new Intent(BookingActivity.this, MainActivity.class);
 
                             intent1.putExtra("date", date1 + "   " + selectedTime);
 
-                            //when save button is clicked then save date in firestore automatic
+
+
+                            //when saveButton is clicked then save date in firestore automatic
 
                             CollectionReference dbBooking = db.collection("booking");
 
@@ -270,31 +232,6 @@ public class BookingActivity extends AppCompatActivity {
                                     date1, selectedTime
                             );
                             dbBooking.add(booking);
-
-                           /* Log.d("DAVID", "add bocking: " + booking.name);
-                            dbBooking.add(booking).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Log.d("DAVID", "Success");
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d("DAVID", "Error", e);
-                                }
-                            }).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentReference> task) {
-                                    Log.d("DAVID", "Complete");
-                                }
-                            }).addOnCanceledListener(new OnCanceledListener() {
-                                @Override
-                                public void onCanceled() {
-                                    Log.d("DAVID", "Canceled");
-
-                                }
-                            });*/
-
 
                             startActivity(intent1);
                             break;
@@ -311,6 +248,57 @@ public class BookingActivity extends AppCompatActivity {
 
 
     }
+
+
+    public void checkIsTimeBusy() {
+
+        stringDate = Integer.toString(selectedDate.getYear()) + " - " + Integer.toString(selectedDate.getMonth() + 1) + " - " + Integer.toString(selectedDate.getDay());
+        Query queryTime = db.collection("booking").whereEqualTo("date", stringDate);
+
+
+        queryTime
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("Sui", "issuccessful " + task.getResult().getDocuments());
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("SUI document.getId", document.getId() + " => " + document.getData().toString());
+
+
+                                if (document.getData().get("time").toString().replaceAll(" ", "").contains("07.00-11.00") == true) {
+
+                                    setButtonDisabled(0);
+                                    Log.d("Sui", stringDate + " 07.00 -11.00 is busy");
+
+                                } else if (document.getData().get("time").toString().replaceAll(" ", "").contains("11.00-15.00") == true) {
+
+                                    setButtonDisabled(1);
+                                    Log.d("Sui", stringDate + " 11.00 -15.00 is busy");
+
+                                } else if (document.getData().get("time").toString().replaceAll(" ", "").contains("15.00-19.00") == true) {
+
+                                    setButtonDisabled(2);
+                                    Log.d("Sui", stringDate + " 15.00 -19.00 is busy");
+
+                                } else if(document.getData().get("time").toString().replaceAll(" ", "").contains("19.00-23.00") == true) {
+
+                                    setButtonDisabled(3);
+                                    Log.d("Sui", stringDate + " 19.00 -23.00 is busy");
+
+                                }
+                            }
+                        } else {
+                            Log.d("SUI", "Error getting documents: ", task.getException());
+                        }
+                    }
+
+                });
+
+    }
+
 
 
 }
