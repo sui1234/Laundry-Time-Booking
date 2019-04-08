@@ -3,7 +3,6 @@ package com.example.mytbooking;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -11,21 +10,15 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CalendarView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -41,12 +34,7 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 
 public class BookingActivity extends AppCompatActivity {
@@ -70,7 +58,7 @@ public class BookingActivity extends AppCompatActivity {
     View dialogView;
 
 
-    String stringDate;
+    String stringSelectedDate;
     FirebaseFirestore db;
 
 
@@ -111,7 +99,8 @@ public class BookingActivity extends AppCompatActivity {
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull final CalendarDay date, boolean selected) {
 
                 selectedDate = date;
-                Log.d("Sui", "dialog");
+                Log.d("Sui", "timeDialog visas");
+                checkIsTimeBusy();
 
                 timeDialog();
 
@@ -148,37 +137,16 @@ public class BookingActivity extends AppCompatActivity {
     };
 
 
-    // get date from calendar
-    public void getTime() {
-        if (selectedDate != null) {
-            year = selectedDate.getYear();
-            month = selectedDate.getMonth() + 1;
-            day = selectedDate.getDay();
-            date1 = Integer.toString(year) + " - " + Integer.toString(month) + " - " + Integer.toString(day);
-
-        }
-
-
-    }
-
-
-    // set button disabled function
-    public void setButtonDisabled(int i) {
-
-        Log.d("SUI", "button1 is enabled");
-        radioGroup.getChildAt(i).setEnabled(false);
-
-
-    }
-
     // timeDialog function
     private void timeDialog() {
+
+
         dialogView = getLayoutInflater().inflate(R.layout.dialog_time, null);
         Dialog myDialog = new TimeDialog(this, 0, 0, dialogView, R.style.DialogTheme);
         myDialog.setCancelable(true);
-        myDialog.show();
 
-        checkIsTimeBusy();
+
+        myDialog.show();
 
 
         radioGroup = dialogView.findViewById(R.id.radio_group);
@@ -222,18 +190,12 @@ public class BookingActivity extends AppCompatActivity {
 
                             intent1.putExtra("date", date1 + "   " + selectedTime);
 
-
-
-                            //when saveButton is clicked then save date in firestore automatic
-
-                            CollectionReference dbBooking = db.collection("booking");
-
-                            Booking booking = new Booking("DAVID",
-                                    date1, selectedTime
-                            );
-                            dbBooking.add(booking);
+                            saveInFirestore();
 
                             startActivity(intent1);
+                            break;
+                        } else {
+                            Toast.makeText(BookingActivity.this, "Välj period", Toast.LENGTH_SHORT).show();
                             break;
                         }
 
@@ -252,11 +214,12 @@ public class BookingActivity extends AppCompatActivity {
 
     public void checkIsTimeBusy() {
 
-        stringDate = Integer.toString(selectedDate.getYear()) + " - " + Integer.toString(selectedDate.getMonth() + 1) + " - " + Integer.toString(selectedDate.getDay());
-        Query queryTime = db.collection("booking").whereEqualTo("date", stringDate);
+        stringSelectedDate = Integer.toString(selectedDate.getYear()) + " - " + Integer.toString(selectedDate.getMonth() + 1)
+                + " - " + Integer.toString(selectedDate.getDay());
+        Query queryDate = db.collection("booking").whereEqualTo("date", stringSelectedDate);
 
 
-        queryTime
+        queryDate
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -265,28 +228,26 @@ public class BookingActivity extends AppCompatActivity {
                             Log.d("Sui", "issuccessful " + task.getResult().getDocuments());
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("SUI document.getId", document.getId() + " => " + document.getData().toString());
-
 
                                 if (document.getData().get("time").toString().replaceAll(" ", "").contains("07.00-11.00") == true) {
 
                                     setButtonDisabled(0);
-                                    Log.d("Sui", stringDate + " 07.00 -11.00 is busy");
+                                    Log.d("Sui", stringSelectedDate + " 07.00 -11.00 is busy");
 
                                 } else if (document.getData().get("time").toString().replaceAll(" ", "").contains("11.00-15.00") == true) {
 
                                     setButtonDisabled(1);
-                                    Log.d("Sui", stringDate + " 11.00 -15.00 is busy");
+                                    Log.d("Sui", stringSelectedDate + " 11.00 -15.00 is busy");
 
                                 } else if (document.getData().get("time").toString().replaceAll(" ", "").contains("15.00-19.00") == true) {
 
                                     setButtonDisabled(2);
-                                    Log.d("Sui", stringDate + " 15.00 -19.00 is busy");
+                                    Log.d("Sui", stringSelectedDate + " 15.00 -19.00 is busy");
 
-                                } else if(document.getData().get("time").toString().replaceAll(" ", "").contains("19.00-23.00") == true) {
+                                } else if (document.getData().get("time").toString().replaceAll(" ", "").contains("19.00-23.00") == true) {
 
                                     setButtonDisabled(3);
-                                    Log.d("Sui", stringDate + " 19.00 -23.00 is busy");
+                                    Log.d("Sui", stringSelectedDate + " 19.00 -23.00 is busy");
 
                                 }
                             }
@@ -299,6 +260,80 @@ public class BookingActivity extends AppCompatActivity {
 
     }
 
+
+    // get date from calendar
+    public void getTime() {
+        if (selectedDate != null) {
+            year = selectedDate.getYear();
+            month = selectedDate.getMonth() + 1;
+            day = selectedDate.getDay();
+            date1 = Integer.toString(year) + " - " + Integer.toString(month) + " - " + Integer.toString(day);
+
+        }
+
+
+    }
+
+
+    // set button disabled function
+    public void setButtonDisabled(int i) {
+
+        Log.d("SUI", "button1 is disabled");
+        radioGroup.getChildAt(i).setEnabled(false);
+
+
+    }
+
+    //when saveButton is clicked then save date in firestore automatic
+    public void saveInFirestore() {
+        CollectionReference dbBooking = db.collection("booking");
+
+        Booking booking = new Booking("DAVID",
+                date1, selectedTime
+        );
+        dbBooking.add(booking)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("SUI", "its successful to add data in firestore");
+                    }
+                });
+    }
+
+    public void checkIsTimeBusySave() {
+
+        stringSelectedDate = Integer.toString(selectedDate.getYear()) + " - " + Integer.toString(selectedDate.getMonth() + 1) + " - " + Integer.toString(selectedDate.getDay());
+        Query queryTime = db.collection("booking").whereEqualTo("date", stringSelectedDate);
+
+
+        queryTime
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("Sui", "issuccessful with save" + task.getResult().getDocuments());
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("SUI document.getId", document.getId() + " => " + document.getData().toString());
+
+
+                                if (selectedTime.equals(document.getData().get("time").toString())) {
+
+
+                                    Log.d("Sui", selectedTime + " is busy");
+                                } else {
+                                    Log.d("Sui", selectedTime + "is not busy and save");
+                                }
+                            }
+                        } else {
+                            Log.d("SUI", "Error getting documents: ", task.getException());
+                        }
+                    }
+
+                });
+
+    }
 
 
 }
