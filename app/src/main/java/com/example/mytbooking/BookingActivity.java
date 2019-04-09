@@ -186,7 +186,7 @@ public class BookingActivity extends AppCompatActivity {
                             Log.d("DAVID", "Save");
 
 
-                            Intent intent1 = new Intent(BookingActivity.this, MainActivity.class);
+                            Intent intent1 = new Intent(BookingActivity.this, MyBookingsActivity.class);
 
                             intent1.putExtra("date", date1 + "   " + selectedTime);
 
@@ -288,7 +288,7 @@ public class BookingActivity extends AppCompatActivity {
     public void saveInFirestore() {
         CollectionReference dbBooking = db.collection("booking");
 
-        Booking booking = new Booking("DAVID",
+        Booking booking = new Booking(name,
                 date1, selectedTime
         );
         dbBooking.add(booking)

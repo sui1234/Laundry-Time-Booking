@@ -9,7 +9,7 @@
 
 
     <TextView
-        android:id="@+id/title_registrera"
+        android:id="@+id/title_logga_in"
         android:layout_width="266dp"
         android:layout_height="55dp"
         android:layout_marginStart="8dp"
@@ -17,7 +17,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="@string/registrera"
+        android:text="@string/logga_in"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="40dp"
@@ -34,7 +34,7 @@
         android:ems="10"
         android:hint="@string/hint_email"
         android:inputType="textEmailAddress"
-        app:layout_constraintTop_toBottomOf="@+id/title_registrera"
+        app:layout_constraintTop_toBottomOf="@+id/title_logga_in"
         tools:layout_editor_absoluteX="91dp" />
 
     <EditText
@@ -48,41 +48,19 @@
         android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@+id/email"
         tools:layout_editor_absoluteX="89dp" />
-    <EditText
-        android:id="@+id/home_number"
-        android:layout_width="match_parent"
-        android:layout_height="59dp"
-        android:layout_marginTop="61dp"
-        android:background="#FFFFFF"
-        android:ems="10"
-        android:hint="@string/hint_bostad_number"
-        android:inputType="textEmailAddress"
-        app:layout_constraintTop_toBottomOf="@+id/email"
-        tools:layout_editor_absoluteX="89dp" />
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="59dp"
-        android:layout_marginTop="121dp"
-        android:background="#FFFFFF"
-        android:ems="10"
-        android:hint="@string/hint_name"
-        android:inputType="textEmailAddress"
-        app:layout_constraintTop_toBottomOf="@+id/email"
-        tools:layout_editor_absoluteX="89dp" />
 
 
     <Button
-        android:id="@+id/register"
+        android:id="@+id/logga_button"
         android:layout_width="300dp"
         android:layout_height="54dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="#FFFFFF"
-        android:text="@string/registrera"
+        android:text="@string/logga_in"
         android:textColor="@color/colorPrimary"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"

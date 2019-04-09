@@ -1,14 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_red_light">
+    android:background="#FFFFFF">
+
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Profile"
-        android:textSize="30dp"
-        android:layout_centerInParent="true"/>
+        android:id="@+id/profile_fragment_title"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="top|center"
+        android:textAlignment="center"
+        android:background="#006AA7"
+        android:text="@string/title_profile"
+        android:textColor="#FFFFFF"
+        android:textSize="34dp" />
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:srcCompat="@drawable/ic_account_circle_black_24dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="25dp"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="280dp"
+        android:layout_height="100dp"
+        android:text="TextView"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="120dp"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:textColor="#171616"/>
+
+    <TextView
+        android:id="@+id/profile_edit_email"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="TextView"
+        android:layout_marginTop="180dp"
+        android:gravity="center_vertical"
+        android:background="#E4E4E4"
+        android:textColor="#171616"
+       />
+    <TextView
+        android:id="@+id/profile_edit_password"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="TextView"
+        android:textColor="#171616"
+        android:layout_marginTop="260dp"
+        android:gravity="center_vertical"
+        android:background="#E4E4E4"
+
+        />
+    <TextView
+        android:id="@+id/profile_edit_address"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="TextView"
+        android:textColor="#171616"
+        android:layout_marginTop="340dp"
+        android:gravity="center_vertical"
+        android:background="#E4E4E4"
+
+        />
+
+    <TextView
+        android:id="@+id/profile_edit_name"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="TextView"
+        android:textColor="#171616"
+        android:layout_marginTop="420dp"
+        android:gravity="center_vertical"
+        android:background="#E4E4E4"
+        />
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="250dp"
+        android:textColor="#FFFFFF"
+        android:background="@color/colorPrimary"
+        android:text="@string/logout"
+        android:textSize="20dp"/>
+
+
+</FrameLayout>
