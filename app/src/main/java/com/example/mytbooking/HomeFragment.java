@@ -22,6 +22,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class HomeFragment extends Fragment {
     TextView bookingDate;
     FirebaseFirestore db;
@@ -73,10 +77,61 @@ public class HomeFragment extends Fragment {
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
-                                Log.d("Sui", "get date successful");
-                                timeResult = document.getData().get("date").toString() + "  " + document.getData().get("time").toString();
 
-                                bookingDate.setText(timeResult);
+
+
+
+
+
+
+                                Calendar calendar = Calendar.getInstance();
+
+                                int year = calendar.get(Calendar.YEAR);
+                                int month = calendar.get(Calendar.MONTH)+1;
+                                int day = calendar.get(Calendar.DATE);
+                                int time = calendar.get(Calendar.HOUR);
+
+                                String date = Integer.toString(year) + Integer.toString(month) + Integer.toString(day);
+
+                                String timeStr = Integer.toString(time);
+                                String compareTime = document.getData().get("time").toString().replaceAll(".","").replaceAll(" - ","");
+
+
+                                String lastFourNum = "";
+
+                                if (compareTime.length() > 4)
+                                {
+                                    lastFourNum = compareTime.substring(compareTime.length() - 4);
+                                }
+                                else
+                                {
+                                    lastFourNum = compareTime;
+                                }
+
+                                System.out.println(lastFourNum);
+
+                                Log.d("SUI",timeStr);
+
+                                Log.d("SUI1",date);
+                                Log.d("SUI2",document.getData().get("date").toString().replaceAll(" ", "").replaceAll("-", ""));
+
+                                if(document.getData().get("date").toString().replaceAll(" ", "").replaceAll("-", "").compareTo(date) <= 0
+                                        && document.getData().get("time").toString().replaceAll(" ", "").replaceAll("-", "")
+                                        .compareTo(timeStr) <= 0 ){
+                                    Log.d("Sui", "get date successful");
+
+
+
+                                    timeResult = document.getData().get("date").toString() + "  " + document.getData().get("time").toString();
+
+                                    bookingDate.setText(timeResult);
+
+                                }
+
+
+                                
+
+
                             }
 
                         }

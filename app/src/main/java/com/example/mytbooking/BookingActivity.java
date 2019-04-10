@@ -309,8 +309,6 @@ public class BookingActivity extends AppCompatActivity {
 
 
         //userBookingsRef.add();
-
-        //eller använda query att fråga ("userid", "12344").
     }
 
     public void checkIsTimeBusySave() {

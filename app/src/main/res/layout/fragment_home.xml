@@ -21,7 +21,6 @@
         android:id="@+id/booking_date"
         android:layout_width="350dp"
         android:layout_height="100dp"
-        android:text="TextView"
         android:textSize="25dp"
         android:textAlignment="center"
         android:layout_marginTop="10dp"
