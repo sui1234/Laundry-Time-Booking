@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -52,7 +53,6 @@ public class BookingActivity extends AppCompatActivity {
     int day;
 
     String date1;
-    String name;
     String selectedTime;
 
     View dialogView;
@@ -60,6 +60,7 @@ public class BookingActivity extends AppCompatActivity {
 
     String stringSelectedDate;
     FirebaseFirestore db;
+    FirebaseAuth auth;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -79,6 +80,7 @@ public class BookingActivity extends AppCompatActivity {
 
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
 
 
         calendarView = findViewById(R.id.calendar);
@@ -288,9 +290,13 @@ public class BookingActivity extends AppCompatActivity {
     public void saveInFirestore() {
         CollectionReference dbBooking = db.collection("booking");
 
-        Booking booking = new Booking(name,
+        auth = FirebaseAuth.getInstance();
+
+
+        Booking booking = new Booking(auth.getCurrentUser().getUid(),
                 date1, selectedTime
         );
+
         dbBooking.add(booking)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -298,6 +304,13 @@ public class BookingActivity extends AppCompatActivity {
                         Log.d("SUI", "its successful to add data in firestore");
                     }
                 });
+
+        //CollectionReference userBookingsRef = db.collection("user").document(auth.getCurrentUser().getUid()).collection("bookings");
+
+
+        //userBookingsRef.add();
+
+        //eller använda query att fråga ("userid", "12344").
     }
 
     public void checkIsTimeBusySave() {

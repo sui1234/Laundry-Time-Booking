@@ -70,8 +70,7 @@ public class SignInActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(SignInActivity.this,MyBookingsActivity.class);
 
-                    FirebaseUser user = firebaseAuth.getCurrentUser();
-
+                    //FirebaseUser user = firebaseAuth.getCurrentUser();
 
 
 
