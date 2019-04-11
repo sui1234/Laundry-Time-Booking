@@ -82,37 +82,4 @@ public class MyBookingsActivity extends AppCompatActivity {
     };
 
 
-
-
-    /*public void getTimeFromFire() {
-
-        Query queryTime = db.collection("booking")
-                .whereEqualTo("name", auth.getCurrentUser().getUid());
-
-        queryTime.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("Sui", "query time is successful " + task.getResult().getDocuments());
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                Log.d("Sui","get date successful");
-                                //timeResult = document.getData().get("date").toString() +"  "+ document.getData().get("time").toString();
-                            }
-
-                        }
-                    }
-                });
-
-
-
-        View view = getLayoutInflater().inflate(R.layout.fragment_home, null);
-        textView= view.findViewById(R.id.booking_date) ;
-        textView.setText(timeResult);
-
-    }*/
-
-
 }

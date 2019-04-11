@@ -62,6 +62,8 @@ public class BookingActivity extends AppCompatActivity {
     FirebaseFirestore db;
     FirebaseAuth auth;
 
+    boolean haveBooked;
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("WrongViewCast")
@@ -184,21 +186,28 @@ public class BookingActivity extends AppCompatActivity {
 
                     case R.id.save:
 
-                        if (year != 0 && selectedTime != null) {
-                            Log.d("DAVID", "Save");
+                        haveBooked();
+
+                        if (haveBooked() == false) {
+                            if (year != 0 && selectedTime != null) {
+                                Log.d("DAVID", "Save");
 
 
-                            Intent intent1 = new Intent(BookingActivity.this, MyBookingsActivity.class);
+                                Intent intent1 = new Intent(BookingActivity.this, MyBookingsActivity.class);
 
-                            intent1.putExtra("date", date1 + "   " + selectedTime);
+                                intent1.putExtra("date", date1 + "   " + selectedTime);
 
-                            saveInFirestore();
+                                saveInFirestore();
 
-                            startActivity(intent1);
-                            break;
+                                startActivity(intent1);
+                                break;
+                            } else {
+                                Toast.makeText(BookingActivity.this, "Välj period", Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+
                         } else {
-                            Toast.makeText(BookingActivity.this, "Välj period", Toast.LENGTH_SHORT).show();
-                            break;
+                            Toast.makeText(BookingActivity.this, "Du har redan en bokad tid", Toast.LENGTH_LONG).show();
                         }
 
                     default:
@@ -309,6 +318,84 @@ public class BookingActivity extends AppCompatActivity {
 
 
         //userBookingsRef.add();
+    }
+
+
+    /*public boolean haveBooked() {
+
+        haveBooked = true;
+        Query query = db.collection("booking").whereEqualTo("name", auth.getCurrentUser().getUid());
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+
+                            document.getData().get("time")
+
+                        }
+                    }
+                });
+
+        return haveBooked;
+    }*/
+
+
+    public boolean haveBooked() {
+
+        haveBooked = false;
+        Query queryTime = db.collection("booking")
+                .whereEqualTo("name", auth.getCurrentUser().getUid());
+
+        queryTime.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("Sui", "query time is successful " + task.getResult().getDocuments());
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+
+                                Calendar calendar = Calendar.getInstance();
+
+                                int year = calendar.get(Calendar.YEAR);
+                                int month = calendar.get(Calendar.MONTH) + 1;
+                                int day = calendar.get(Calendar.DATE);
+                                int time = calendar.get(Calendar.HOUR_OF_DAY);
+
+                                String dateCurrent = Integer.toString(year) + Integer.toString(month) + Integer.toString(day);
+
+                                String compareDate = document.getData().get("date").toString().replaceAll(" ", "").replaceAll("-", "");
+
+
+                                String timeCurrent = Integer.toString(time);
+                                String getTimeFire = document.getData().get("time").toString().replace(".", "").replace(" - ", "");
+
+                                String compareTime = getTimeFire.substring(4, 6);
+
+
+                                Integer compareDateInt = Integer.parseInt(compareDate);
+                                Integer dateCurrentInt = Integer.parseInt(dateCurrent);
+
+                                Integer compareTimeInt = Integer.parseInt(compareTime);
+                                Integer timeCurrentInt = Integer.parseInt(timeCurrent);
+
+
+                                if (compareDateInt.compareTo(dateCurrentInt) > 0 ||
+                                        (compareDateInt.compareTo(dateCurrentInt) == 0 && compareTimeInt.compareTo(timeCurrentInt) >= 0)) {
+                                    Log.d("Sui", "compare date and time successful");
+
+                                    haveBooked = true;
+                                }
+
+                            }
+
+                        }
+                    }
+                });
+        return haveBooked;
+
     }
 
     public void checkIsTimeBusySave() {

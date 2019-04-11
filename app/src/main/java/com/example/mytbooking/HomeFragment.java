@@ -32,6 +32,7 @@ public class HomeFragment extends Fragment {
     FirebaseAuth auth;
     View plusView;
     String timeResult;
+    boolean busy;
 
     @Nullable
     @Override
@@ -46,14 +47,14 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-//send selected date to mina booking side.
+
         getTimeFromFire();
 
-
-       /* bookingDate = plusView.findViewById(R.id.booking_date);
+//send selected date to mina booking side.
+        bookingDate = plusView.findViewById(R.id.booking_date);
         Intent intent = getActivity().getIntent();
         String date = intent.getStringExtra("date");
-        bookingDate.setText(date);*/
+        bookingDate.setText(date);
 
         return plusView;
 
@@ -61,6 +62,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void getTimeFromFire() {
+
         bookingDate = plusView.findViewById(R.id.booking_date);
 
         db = FirebaseFirestore.getInstance();
@@ -78,49 +80,46 @@ public class HomeFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
 
-
-
-
-
-
-
                                 Calendar calendar = Calendar.getInstance();
 
                                 int year = calendar.get(Calendar.YEAR);
-                                int month = calendar.get(Calendar.MONTH)+1;
+                                int month = calendar.get(Calendar.MONTH) + 1;
                                 int day = calendar.get(Calendar.DATE);
-                                int time = calendar.get(Calendar.HOUR);
+                                int time = calendar.get(Calendar.HOUR_OF_DAY);
 
-                                String date = Integer.toString(year) + Integer.toString(month) + Integer.toString(day);
+                                String dateCurrent = Integer.toString(year) + Integer.toString(month) + Integer.toString(day);
 
-                                String timeStr = Integer.toString(time);
-                                String compareTime = document.getData().get("time").toString().replaceAll(".","").replaceAll(" - ","");
-
-
-                                String lastFourNum = "";
-
-                                if (compareTime.length() > 4)
-                                {
-                                    lastFourNum = compareTime.substring(compareTime.length() - 4);
-                                }
-                                else
-                                {
-                                    lastFourNum = compareTime;
-                                }
-
-                                System.out.println(lastFourNum);
-
-                                Log.d("SUI",timeStr);
-
-                                Log.d("SUI1",date);
-                                Log.d("SUI2",document.getData().get("date").toString().replaceAll(" ", "").replaceAll("-", ""));
-
-                                if(document.getData().get("date").toString().replaceAll(" ", "").replaceAll("-", "").compareTo(date) <= 0
-                                        && document.getData().get("time").toString().replaceAll(" ", "").replaceAll("-", "")
-                                        .compareTo(timeStr) <= 0 ){
-                                    Log.d("Sui", "get date successful");
+                                String compareDate = document.getData().get("date").toString().replaceAll(" ", "").replaceAll("-", "");
 
 
+                                String timeCurrent = Integer.toString(time);
+                                String getTimeFire = document.getData().get("time").toString().replace(".", "").replace(" - ", "");
+
+                                String compareTime = getTimeFire.substring(4, 6);
+
+
+                                Integer compareDateInt = Integer.parseInt(compareDate);
+                                Integer dateCurrentInt = Integer.parseInt(dateCurrent);
+
+                                Integer compareTimeInt = Integer.parseInt(compareTime);
+                                Integer timeCurrentInt = Integer.parseInt(timeCurrent);
+
+
+                                Log.d("SUI timeCurrent", timeCurrent);
+
+                                Log.d("SUI3", getTimeFire);
+                                Log.d("SUI compareTime", compareTime);
+
+                                Log.d("SUI currentdate", dateCurrent);
+                                Log.d("SUI2 comparedate", compareDate);
+
+                                Log.d("SUI compare date result", Integer.toString(compareDateInt.compareTo(dateCurrentInt)));
+
+                                Log.d("SUi compare time result", Integer.toString(compareTimeInt.compareTo(timeCurrentInt)));
+
+                                if (compareDateInt.compareTo(dateCurrentInt) > 0 ||
+                                        (compareDateInt.compareTo(dateCurrentInt) == 0 && compareTimeInt.compareTo(timeCurrentInt) >= 0)) {
+                                    Log.d("Sui", "compare date and time successful");
 
                                     timeResult = document.getData().get("date").toString() + "  " + document.getData().get("time").toString();
 
@@ -128,9 +127,81 @@ public class HomeFragment extends Fragment {
 
                                 }
 
+                            }
 
-                                
+                        }
+                    }
+                });
 
+    }
+
+    public boolean havebooked() {
+
+        busy = false;
+        bookingDate = plusView.findViewById(R.id.booking_date);
+
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        Query queryTime = db.collection("booking")
+                .whereEqualTo("name", auth.getCurrentUser().getUid());
+
+        queryTime.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("Sui", "query time is successful " + task.getResult().getDocuments());
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+
+                                Calendar calendar = Calendar.getInstance();
+
+                                int year = calendar.get(Calendar.YEAR);
+                                int month = calendar.get(Calendar.MONTH) + 1;
+                                int day = calendar.get(Calendar.DATE);
+                                int time = calendar.get(Calendar.HOUR_OF_DAY);
+
+                                String dateCurrent = Integer.toString(year) + Integer.toString(month) + Integer.toString(day);
+
+                                String compareDate = document.getData().get("date").toString().replaceAll(" ", "").replaceAll("-", "");
+
+
+                                String timeCurrent = Integer.toString(time);
+                                String getTimeFire = document.getData().get("time").toString().replace(".", "").replace(" - ", "");
+
+                                String compareTime = getTimeFire.substring(4, 6);
+
+
+                                Integer compareDateInt = Integer.parseInt(compareDate);
+                                Integer dateCurrentInt = Integer.parseInt(dateCurrent);
+
+                                Integer compareTimeInt = Integer.parseInt(compareTime);
+                                Integer timeCurrentInt = Integer.parseInt(timeCurrent);
+
+
+                                Log.d("SUI timeCurrent", timeCurrent);
+
+                                Log.d("SUI3", getTimeFire);
+                                Log.d("SUI compareTime", compareTime);
+
+                                Log.d("SUI currentdate", dateCurrent);
+                                Log.d("SUI2 comparedate", compareDate);
+
+                                Log.d("SUI compare date result", Integer.toString(compareDateInt.compareTo(dateCurrentInt)));
+
+                                Log.d("SUi compare time result", Integer.toString(compareTimeInt.compareTo(timeCurrentInt)));
+
+                                if (compareDateInt.compareTo(dateCurrentInt) > 0 ||
+                                        (compareDateInt.compareTo(dateCurrentInt) == 0 && compareTimeInt.compareTo(timeCurrentInt) >= 0)) {
+                                    Log.d("Sui", "compare date and time successful");
+
+                                    timeResult = document.getData().get("date").toString() + "  " + document.getData().get("time").toString();
+
+                                    bookingDate.setText(timeResult);
+
+                                    busy = true;
+                                }
 
                             }
 
@@ -138,9 +209,6 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-
-
-
-
+        return busy;
     }
 }
