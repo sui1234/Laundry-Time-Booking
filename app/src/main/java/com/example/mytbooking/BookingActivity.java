@@ -62,7 +62,7 @@ public class BookingActivity extends AppCompatActivity {
     FirebaseFirestore db;
     FirebaseAuth auth;
 
-    boolean haveBooked;
+    boolean haveBooked = false;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -175,6 +175,8 @@ public class BookingActivity extends AppCompatActivity {
         cancelView = myDialog.findViewById(R.id.cancel);
         saveView = myDialog.findViewById(R.id.save);
 
+        haveBooked();
+
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,7 +188,8 @@ public class BookingActivity extends AppCompatActivity {
 
                     case R.id.save:
 
-                        haveBooked();
+
+                       Log.d("SUI boolean",String.valueOf(haveBooked));
 
                         if (haveBooked() == false) {
                             if (year != 0 && selectedTime != null) {
@@ -204,7 +207,7 @@ public class BookingActivity extends AppCompatActivity {
                             } else {
                                 Toast.makeText(BookingActivity.this, "Välj period", Toast.LENGTH_SHORT).show();
                                 break;
-                            }
+                           }
 
                         } else {
                             Toast.makeText(BookingActivity.this, "Du har redan en bokad tid", Toast.LENGTH_LONG).show();
@@ -343,7 +346,6 @@ public class BookingActivity extends AppCompatActivity {
 
     public boolean haveBooked() {
 
-        haveBooked = false;
         Query queryTime = db.collection("booking")
                 .whereEqualTo("name", auth.getCurrentUser().getUid());
 
@@ -383,7 +385,7 @@ public class BookingActivity extends AppCompatActivity {
 
 
                                 if (compareDateInt.compareTo(dateCurrentInt) > 0 ||
-                                        (compareDateInt.compareTo(dateCurrentInt) == 0 && compareTimeInt.compareTo(timeCurrentInt) >= 0)) {
+                                        (compareDateInt.compareTo(dateCurrentInt) == 0 && compareTimeInt.compareTo(timeCurrentInt) >0)) {
                                     Log.d("Sui", "compare date and time successful");
 
                                     haveBooked = true;

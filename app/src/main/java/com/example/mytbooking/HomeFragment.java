@@ -118,7 +118,7 @@ public class HomeFragment extends Fragment {
                                 Log.d("SUi compare time result", Integer.toString(compareTimeInt.compareTo(timeCurrentInt)));
 
                                 if (compareDateInt.compareTo(dateCurrentInt) > 0 ||
-                                        (compareDateInt.compareTo(dateCurrentInt) == 0 && compareTimeInt.compareTo(timeCurrentInt) >= 0)) {
+                                        (compareDateInt.compareTo(dateCurrentInt) == 0 && compareTimeInt.compareTo(timeCurrentInt) > 0)) {
                                     Log.d("Sui", "compare date and time successful");
 
                                     timeResult = document.getData().get("date").toString() + "  " + document.getData().get("time").toString();
@@ -135,80 +135,5 @@ public class HomeFragment extends Fragment {
 
     }
 
-    public boolean havebooked() {
 
-        busy = false;
-        bookingDate = plusView.findViewById(R.id.booking_date);
-
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
-        Query queryTime = db.collection("booking")
-                .whereEqualTo("name", auth.getCurrentUser().getUid());
-
-        queryTime.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("Sui", "query time is successful " + task.getResult().getDocuments());
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-
-
-                                Calendar calendar = Calendar.getInstance();
-
-                                int year = calendar.get(Calendar.YEAR);
-                                int month = calendar.get(Calendar.MONTH) + 1;
-                                int day = calendar.get(Calendar.DATE);
-                                int time = calendar.get(Calendar.HOUR_OF_DAY);
-
-                                String dateCurrent = Integer.toString(year) + Integer.toString(month) + Integer.toString(day);
-
-                                String compareDate = document.getData().get("date").toString().replaceAll(" ", "").replaceAll("-", "");
-
-
-                                String timeCurrent = Integer.toString(time);
-                                String getTimeFire = document.getData().get("time").toString().replace(".", "").replace(" - ", "");
-
-                                String compareTime = getTimeFire.substring(4, 6);
-
-
-                                Integer compareDateInt = Integer.parseInt(compareDate);
-                                Integer dateCurrentInt = Integer.parseInt(dateCurrent);
-
-                                Integer compareTimeInt = Integer.parseInt(compareTime);
-                                Integer timeCurrentInt = Integer.parseInt(timeCurrent);
-
-
-                                Log.d("SUI timeCurrent", timeCurrent);
-
-                                Log.d("SUI3", getTimeFire);
-                                Log.d("SUI compareTime", compareTime);
-
-                                Log.d("SUI currentdate", dateCurrent);
-                                Log.d("SUI2 comparedate", compareDate);
-
-                                Log.d("SUI compare date result", Integer.toString(compareDateInt.compareTo(dateCurrentInt)));
-
-                                Log.d("SUi compare time result", Integer.toString(compareTimeInt.compareTo(timeCurrentInt)));
-
-                                if (compareDateInt.compareTo(dateCurrentInt) > 0 ||
-                                        (compareDateInt.compareTo(dateCurrentInt) == 0 && compareTimeInt.compareTo(timeCurrentInt) >= 0)) {
-                                    Log.d("Sui", "compare date and time successful");
-
-                                    timeResult = document.getData().get("date").toString() + "  " + document.getData().get("time").toString();
-
-                                    bookingDate.setText(timeResult);
-
-                                    busy = true;
-                                }
-
-                            }
-
-                        }
-                    }
-                });
-
-        return busy;
-    }
 }
