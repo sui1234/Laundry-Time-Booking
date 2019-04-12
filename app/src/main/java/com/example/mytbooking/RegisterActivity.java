@@ -1,5 +1,6 @@
 package com.example.mytbooking;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -98,6 +99,12 @@ public class RegisterActivity extends AppCompatActivity {
                 if ( task.isSuccessful()) {
                     Log.d("!!!", "user created");
                     Toast.makeText(RegisterActivity.this, "register succecesful", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(RegisterActivity.this,MyBookingsActivity.class);
+
+                    //FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                    startActivity(intent);
+
 
                     CollectionReference dbUser = db.collection("user");
                     User user = new User(

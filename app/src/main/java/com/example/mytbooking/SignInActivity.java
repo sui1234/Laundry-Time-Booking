@@ -50,33 +50,28 @@ public class SignInActivity extends AppCompatActivity {
         });
     }
 
-    public void userSignIn(){
+    public void userSignIn() {
         String email = editEmail.getText().toString().trim();
         String password = editPassword.getText().toString().trim();
 
-        if(TextUtils.isEmpty(email)){
+        if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, " Mata in email", Toast.LENGTH_SHORT).show();
             return;
-        }if(TextUtils.isEmpty(password)){
+        }
+        if (TextUtils.isEmpty(password)) {
             Toast.makeText(this, " Mata in lösenord", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Log.d("Sui","sign in successful");
+                if (task.isSuccessful()) {
+                    Log.d("Sui", "sign in successful");
 
-                    Intent intent = new Intent(SignInActivity.this,MyBookingsActivity.class);
-
-                    //FirebaseUser user = firebaseAuth.getCurrentUser();
-
-
-
+                    Intent intent = new Intent(SignInActivity.this, MyBookingsActivity.class);
                     startActivity(intent);
                 }
-
 
 
             }

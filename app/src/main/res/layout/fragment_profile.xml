@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF">
@@ -23,69 +24,67 @@
         android:layout_height="100dp"
         app:srcCompat="@drawable/ic_account_circle_black_24dp"
         android:layout_marginTop="80dp"
-        android:layout_marginLeft="25dp"/>
+        android:layout_marginLeft="30dp"
+        tools:ignore="VectorDrawableCompat" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="280dp"
         android:layout_height="100dp"
-        android:text="TextView"
+
         android:layout_marginTop="80dp"
-        android:layout_marginLeft="120dp"
+        android:layout_marginLeft="100dp"
         android:gravity="center"
-        android:textSize="20dp"
-        android:textColor="#171616"/>
+        android:textSize="40dp"
+        android:textColorHighlight="@color/colorPrimary"
+        android:textColor="@color/colorPrimary"/>
 
     <TextView
         android:id="@+id/profile_edit_email"
+        android:paddingLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:text="TextView"
-        android:layout_marginTop="180dp"
+        android:textSize="20dp"
+        android:layout_marginTop="200dp"
         android:gravity="center_vertical"
         android:background="#E4E4E4"
         android:textColor="#171616"
        />
     <TextView
-        android:id="@+id/profile_edit_password"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:text="TextView"
-        android:textColor="#171616"
-        android:layout_marginTop="260dp"
-        android:gravity="center_vertical"
-        android:background="#E4E4E4"
-
-        />
-    <TextView
         android:id="@+id/profile_edit_address"
+        android:paddingLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:text="TextView"
+
+        android:textSize="20dp"
         android:textColor="#171616"
-        android:layout_marginTop="340dp"
+        android:layout_marginTop="280dp"
         android:gravity="center_vertical"
         android:background="#E4E4E4"
 
         />
-
     <TextView
         android:id="@+id/profile_edit_name"
+        android:paddingLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:text="TextView"
+
+        android:textSize="20dp"
         android:textColor="#171616"
-        android:layout_marginTop="420dp"
+        android:layout_marginTop="360dp"
         android:gravity="center_vertical"
         android:background="#E4E4E4"
+
         />
+
+
 
     <Button
         android:id="@+id/logout"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="220dp"
         android:textColor="#FFFFFF"
         android:background="@color/colorPrimary"
         android:text="@string/logout"

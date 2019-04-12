@@ -32,7 +32,6 @@ public class HomeFragment extends Fragment {
     FirebaseAuth auth;
     View plusView;
     String timeResult;
-    boolean busy;
 
     @Nullable
     @Override
@@ -50,16 +49,12 @@ public class HomeFragment extends Fragment {
 
         getTimeFromFire();
 
-//send selected date to mina booking side.
-        bookingDate = plusView.findViewById(R.id.booking_date);
-        Intent intent = getActivity().getIntent();
-        String date = intent.getStringExtra("date");
-        bookingDate.setText(date);
-
         return plusView;
 
 
     }
+
+    // get time from firestore and check if the booked time is expired, if not ,then display it in bookingDate.
 
     public void getTimeFromFire() {
 

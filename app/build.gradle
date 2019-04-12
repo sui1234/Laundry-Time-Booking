@@ -11,6 +11,8 @@ android {
         versionName "1.0"
         minSdkVersion 14
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -38,6 +40,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-gcm:15.0.1'
 
 
+    implementation 'com.android.support:multidex:1.0.3'
     apply plugin: 'com.google.gms.google-services'
 
 

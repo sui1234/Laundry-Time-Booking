@@ -27,23 +27,11 @@ public class MyBookingsActivity extends AppCompatActivity {
     FirebaseFirestore db;
     FirebaseAuth auth;
 
-    String timeResult;
-    TextView textView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_bookings);
-
-
-
-
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setTimestampsInSnapshotsEnabled(true)
-                .build();
-        firestore.setFirestoreSettings(settings);
 
 
         FirebaseApp.initializeApp(this);
@@ -56,7 +44,6 @@ public class MyBookingsActivity extends AppCompatActivity {
                 .replace(R.id.fragment_container, new HomeFragment()).commit();
 
 
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -66,9 +53,6 @@ public class MyBookingsActivity extends AppCompatActivity {
             switch (menuItem.getItemId()) {
                 case R.id.nav_home:
                     selectedFragment = new HomeFragment();
-                    //getTimeFromFire();
-
-
                     break;
                 case R.id.nav_profile:
                     selectedFragment = new ProfileFragment();

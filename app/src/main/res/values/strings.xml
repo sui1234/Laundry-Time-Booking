@@ -15,7 +15,7 @@
     <string name="logga_in"> Logga in</string>
     <string name="hint_email">E-post</string>
     <string name="hint_lösenord">Lösenord</string>
-    <string name="hint_bostad_number">Bostad nummer</string>
+    <string name="hint_bostad_number">Address</string>
     <string name="hint_name">Name </string>
     <string name="logout"> Logga ut</string>
 </resources>

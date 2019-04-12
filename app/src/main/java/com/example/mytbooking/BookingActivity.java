@@ -73,13 +73,6 @@ public class BookingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_booking);
 
 
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setTimestampsInSnapshotsEnabled(true)
-                .build();
-        firestore.setFirestoreSettings(settings);
-
-
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -104,11 +97,15 @@ public class BookingActivity extends AppCompatActivity {
 
                 selectedDate = date;
                 Log.d("Sui", "timeDialog visas");
-                checkIsTimeBusy();
+
+                checkIfTimeBusy();
+
 
                 timeDialog();
 
-                getTime();
+                checkIfTimeIsExpired();
+
+                getDate();
 
             }
         });
@@ -189,7 +186,7 @@ public class BookingActivity extends AppCompatActivity {
                     case R.id.save:
 
 
-                       Log.d("SUI boolean",String.valueOf(haveBooked));
+                        Log.d("SUI boolean", String.valueOf(haveBooked));
 
                         if (haveBooked() == false) {
                             if (year != 0 && selectedTime != null) {
@@ -207,7 +204,7 @@ public class BookingActivity extends AppCompatActivity {
                             } else {
                                 Toast.makeText(BookingActivity.this, "Välj period", Toast.LENGTH_SHORT).show();
                                 break;
-                           }
+                            }
 
                         } else {
                             Toast.makeText(BookingActivity.this, "Du har redan en bokad tid", Toast.LENGTH_LONG).show();
@@ -225,8 +222,52 @@ public class BookingActivity extends AppCompatActivity {
 
     }
 
+    // when you open todays timeDialog, compare four time periods with current time, if current time is bigger than periods, the periods need to be setDisabled.
+    public void checkIfTimeIsExpired() {
 
-    public void checkIsTimeBusy() {
+
+        Calendar calendar = Calendar.getInstance();
+        String dayCurrent = Integer.toString(calendar.get(Calendar.DATE));
+        String daySelected = Integer.toString(selectedDate.getDay());
+        int hourCurrent = calendar.get(Calendar.HOUR_OF_DAY);
+
+
+        Log.d("SUI dayCurrent ", dayCurrent);
+
+        Log.d("SUI daySelected", daySelected);
+
+        Log.d("SUI hourCurrent", Integer.toString(hourCurrent));
+
+
+        if (dayCurrent.equals(daySelected)) {
+
+            if (hourCurrent >= 11) {
+                setButtonDisabled(0);
+
+            }
+            if (hourCurrent >= 15) {
+                setButtonDisabled(0);
+                setButtonDisabled(1);
+            }
+            if (hourCurrent >= 19) {
+                setButtonDisabled(0);
+                setButtonDisabled(1);
+                setButtonDisabled(2);
+
+            }
+            if (hourCurrent >= 23) {
+                setButtonDisabled(0);
+                setButtonDisabled(1);
+                setButtonDisabled(2);
+                setButtonDisabled(3);
+            }
+
+        }
+
+
+    }
+
+    public void checkIfTimeBusy() {
 
         stringSelectedDate = Integer.toString(selectedDate.getYear()) + " - " + Integer.toString(selectedDate.getMonth() + 1)
                 + " - " + Integer.toString(selectedDate.getDay());
@@ -249,6 +290,7 @@ public class BookingActivity extends AppCompatActivity {
                                     Log.d("Sui", stringSelectedDate + " 07.00 -11.00 is busy");
 
                                 } else if (document.getData().get("time").toString().replaceAll(" ", "").contains("11.00-15.00") == true) {
+
 
                                     setButtonDisabled(1);
                                     Log.d("Sui", stringSelectedDate + " 11.00 -15.00 is busy");
@@ -276,7 +318,7 @@ public class BookingActivity extends AppCompatActivity {
 
 
     // get date from calendar
-    public void getTime() {
+    public void getDate() {
         if (selectedDate != null) {
             year = selectedDate.getYear();
             month = selectedDate.getMonth() + 1;
@@ -318,32 +360,10 @@ public class BookingActivity extends AppCompatActivity {
                 });
 
         //CollectionReference userBookingsRef = db.collection("user").document(auth.getCurrentUser().getUid()).collection("bookings");
-
-
         //userBookingsRef.add();
     }
 
-
-    /*public boolean haveBooked() {
-
-        haveBooked = true;
-        Query query = db.collection("booking").whereEqualTo("name", auth.getCurrentUser().getUid());
-        query.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-
-                            document.getData().get("time")
-
-                        }
-                    }
-                });
-
-        return haveBooked;
-    }*/
-
-
+    // check if user have booked times and the times is not expired.
     public boolean haveBooked() {
 
         Query queryTime = db.collection("booking")
@@ -383,9 +403,9 @@ public class BookingActivity extends AppCompatActivity {
                                 Integer compareTimeInt = Integer.parseInt(compareTime);
                                 Integer timeCurrentInt = Integer.parseInt(timeCurrent);
 
-
+                                // check if times are not expired,then haveBooked = true.
                                 if (compareDateInt.compareTo(dateCurrentInt) > 0 ||
-                                        (compareDateInt.compareTo(dateCurrentInt) == 0 && compareTimeInt.compareTo(timeCurrentInt) >0)) {
+                                        (compareDateInt.compareTo(dateCurrentInt) == 0 && compareTimeInt.compareTo(timeCurrentInt) > 0)) {
                                     Log.d("Sui", "compare date and time successful");
 
                                     haveBooked = true;
