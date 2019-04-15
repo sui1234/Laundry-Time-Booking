@@ -28,6 +28,7 @@
         android:gravity="center"
 
 
+
         android:background="@drawable/textview_bg"
 
         android:layout_gravity="center"/>

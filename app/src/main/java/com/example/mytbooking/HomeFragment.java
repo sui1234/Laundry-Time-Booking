@@ -1,10 +1,12 @@
 package com.example.mytbooking;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +35,8 @@ public class HomeFragment extends Fragment {
     View plusView;
     String timeResult;
 
+    String id;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,6 +52,7 @@ public class HomeFragment extends Fragment {
 
 
         getTimeFromFire();
+        cancel();
 
         return plusView;
 
@@ -116,6 +121,9 @@ public class HomeFragment extends Fragment {
                                         (compareDateInt.compareTo(dateCurrentInt) == 0 && compareTimeInt.compareTo(timeCurrentInt) > 0)) {
                                     Log.d("Sui", "compare date and time successful");
 
+                                    id = document.getId();
+                                    Log.d("SUI ID", id);
+
                                     timeResult = document.getData().get("date").toString() + "  " + document.getData().get("time").toString();
 
                                     bookingDate.setText(timeResult);
@@ -128,6 +136,44 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
+    }
+
+
+    public void cancel() {
+        bookingDate = plusView.findViewById(R.id.booking_date);
+        bookingDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                if (timeResult != null) {
+                    alert.setMessage("Vill du avboka tid  " + timeResult + " ?")
+
+                            .setCancelable(false)
+                            .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Log.d("Sui avboka", "succesful");
+
+//delete date from firestore
+                                    db.collection("booking").document(id).delete();
+                                    bookingDate.setText(null);
+
+
+                                }
+                            })
+                            .setNegativeButton("Nej", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alert.setTitle("Avboka");
+                    alert.show();
+                }
+
+
+            }
+        });
     }
 
 

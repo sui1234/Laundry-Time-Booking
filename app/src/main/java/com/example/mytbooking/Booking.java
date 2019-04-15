@@ -4,6 +4,7 @@ public class Booking {
     String name;
     String date;
     String time;
+    String id;
 
 
     public void Booking(){}
@@ -28,4 +29,6 @@ public class Booking {
     public String getTime() {
         return time;
     }
+
+    public String getId(){return id;}
 }
