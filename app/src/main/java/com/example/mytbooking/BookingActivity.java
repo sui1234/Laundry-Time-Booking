@@ -47,7 +47,7 @@ public class BookingActivity extends AppCompatActivity {
 
     RadioGroup radioGroup;
     RadioButton radioButton;
-    Booking activeBooking = null;
+    //Booking activeBooking = null;
 
     int year;
     int month;
@@ -100,7 +100,6 @@ public class BookingActivity extends AppCompatActivity {
                 Log.d("Sui", "timeDialog visas");
 
                 checkIfTimeBusy();
-
 
                 timeDialog();
 
@@ -198,12 +197,12 @@ public class BookingActivity extends AppCompatActivity {
 
                                 intent1.putExtra("date", date1 + "   " + selectedTime);
 
-                                if (activeBooking !=null) {
+                                /*if (activeBooking != null) {
                                     db.collection("booking").document(activeBooking.id).delete();
-                                }
+                                }*/
 
                                 saveInFirestore();
-                                
+
                                 startActivity(intent1);
                                 break;
                             } else {

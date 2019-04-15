@@ -54,6 +54,7 @@ public class HomeFragment extends Fragment {
         getTimeFromFire();
         cancel();
 
+
         return plusView;
 
 
@@ -140,40 +141,67 @@ public class HomeFragment extends Fragment {
 
 
     public void cancel() {
+
         bookingDate = plusView.findViewById(R.id.booking_date);
+
+
         bookingDate.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
                 AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+
                 if (timeResult != null) {
                     alert.setMessage("Vill du avboka tid  " + timeResult + " ?")
 
                             .setCancelable(false)
                             .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+
                                     Log.d("Sui avboka", "succesful");
 
-//delete date from firestore
+                                    //delete date from firestore
+
                                     db.collection("booking").document(id).delete();
-                                    bookingDate.setText(null);
+                                    bookingDate.setText("");
 
+                                    bookingDate.setEnabled(false);
 
+                                    if (bookingDate.getText().equals(""))
+                                        Log.d("SUI bookingDate", "empty");
+                                    else
+                                        Log.d("SUI bookingDate", ":" + bookingDate.getText() + ":");
                                 }
+
                             })
+
                             .setNegativeButton("Nej", new DialogInterface.OnClickListener() {
+
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+
                                     dialog.cancel();
+
+                                    //Intent intent = new Intent(getContext(), BookingActivity.class);
+                                    //startActivity(intent);
                                 }
+
                             });
+
                     alert.setTitle("Avboka");
+
                     alert.show();
+
                 }
 
-
             }
+
         });
+
+
     }
 
 
