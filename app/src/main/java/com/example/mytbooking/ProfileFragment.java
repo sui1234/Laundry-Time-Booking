@@ -32,7 +32,6 @@ public class ProfileFragment extends Fragment {
 
     View view;
     TextView emailView;
-    TextView nameView;
     TextView addressView;
     TextView titleNameView;
     String email;

@@ -120,6 +120,7 @@ public class HomeFragment extends Fragment {
 
                                 if (compareDateInt.compareTo(dateCurrentInt) > 0 ||
                                         (compareDateInt.compareTo(dateCurrentInt) == 0 && compareTimeInt.compareTo(timeCurrentInt) > 0)) {
+
                                     Log.d("Sui", "compare date and time successful");
 
                                     id = document.getId();
@@ -166,6 +167,7 @@ public class HomeFragment extends Fragment {
                                     //delete date from firestore
 
                                     db.collection("booking").document(id).delete();
+                                    Log.d("Sui Document id " ,db.collection("booking").document(id)+"." );
                                     bookingDate.setText("");
 
                                     bookingDate.setEnabled(false);

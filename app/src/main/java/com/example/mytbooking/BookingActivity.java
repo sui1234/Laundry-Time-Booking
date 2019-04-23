@@ -64,6 +64,7 @@ public class BookingActivity extends AppCompatActivity {
     FirebaseAuth auth;
 
     boolean haveBooked = false;
+    boolean isBusySave = false;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -146,9 +147,7 @@ public class BookingActivity extends AppCompatActivity {
         Dialog myDialog = new TimeDialog(this, 0, 0, dialogView, R.style.DialogTheme);
         myDialog.setCancelable(true);
 
-
         myDialog.show();
-
 
         radioGroup = dialogView.findViewById(R.id.radio_group);
 
@@ -165,6 +164,8 @@ public class BookingActivity extends AppCompatActivity {
 
                     selectedTime = radioButton.getText().toString();
 
+//check if two users book at the same time.
+                    checkIfTimeIsBusySave();
                 }
             });
 
@@ -174,49 +175,45 @@ public class BookingActivity extends AppCompatActivity {
 
         haveBooked();
 
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.cancel:
-                        Intent intent = new Intent(BookingActivity.this, BookingActivity.class);
-                        startActivity(intent);
-                        break;
+        if (isBusySave == false) {
 
-                    case R.id.save:
+            saveView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (haveBooked() == false) {
+                        if (year != 0 && selectedTime != null) {
+                            Log.d("DAVID", "Save");
 
-                        Log.d("SUI boolean", String.valueOf(haveBooked));
-
-                        if (haveBooked() == false) {
-                            if (year != 0 && selectedTime != null) {
-                                Log.d("DAVID", "Save");
-
-                                Intent intent1 = new Intent(BookingActivity.this, MyBookingsActivity.class);
-                                intent1.putExtra("date", date1 + "   " + selectedTime);
+                            Intent intent1 = new Intent(BookingActivity.this, MyBookingsActivity.class);
+                            intent1.putExtra("date", date1 + "   " + selectedTime);
 
                                 /*if (activeBooking != null) {
                                     db.collection("booking").document(activeBooking.id).delete();
                                 }*/
 
-                                saveInFirestore();
+                            saveInFirestore();
 
-                                startActivity(intent1);
-                                break;
-                            } else {
-                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.choose_period), Toast.LENGTH_LONG).show();
-                                break;
-                            }
+                            startActivity(intent1);
 
                         } else {
-                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.have_time), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.choose_period), Toast.LENGTH_LONG).show();
+
                         }
-                    default:
-                        break;
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.have_time), Toast.LENGTH_LONG).show();
+                    }
                 }
+            });
+        }
+
+        cancelView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BookingActivity.this, BookingActivity.class);
+                startActivity(intent);
             }
-        };
-        cancelView.setOnClickListener(listener);
-        saveView.setOnClickListener(listener);
+        });
 
     }
 
@@ -359,7 +356,7 @@ public class BookingActivity extends AppCompatActivity {
         //userBookingsRef.add();
     }
 
-    // check if user have booked times and the times is not expired.
+    // check if user have booked times and the times are not expired.
     public boolean haveBooked() {
 
         Query queryTime = db.collection("booking")
@@ -370,7 +367,7 @@ public class BookingActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            Log.d("Sui", "query time is successful " + task.getResult().getDocuments());
+                            Log.d("Sui", "haveBooked query time is successful " + task.getResult().getDocuments());
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
@@ -416,7 +413,7 @@ public class BookingActivity extends AppCompatActivity {
 
     }
 
-    public void checkIsTimeBusySave() {
+    public boolean checkIfTimeIsBusySave() {
 
         stringSelectedDate = Integer.toString(selectedDate.getYear()) + " - " + Integer.toString(selectedDate.getMonth() + 1) + " - " + Integer.toString(selectedDate.getDay());
         Query queryTime = db.collection("booking").whereEqualTo("date", stringSelectedDate);
@@ -428,18 +425,23 @@ public class BookingActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            Log.d("Sui", "issuccessful with save" + task.getResult().getDocuments());
+                            Log.d("Sui", "check if time is busy when save --issuccessful with save" + task.getResult().getDocuments());
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("SUI document.getId", document.getId() + " => " + document.getData().toString());
 
 
-                                if (selectedTime.equals(document.getData().get("time").toString())) {
+                                if (document.getData().get("time").toString().equals(selectedTime)) {
 
+                                    isBusySave = true;
 
-                                    Log.d("Sui", selectedTime + " is busy");
+                                    Log.d("Sui isbusysave", isBusySave + " .");
+                                    Log.d("Sui", document.getData().get("time") + "time");
+                                    Log.d("Sui", selectedTime + " is choosed by others");
                                 } else {
-                                    Log.d("Sui", selectedTime + "is not busy and save");
+
+                                    isBusySave = false;
+                                    Log.d("Sui", selectedTime + " is not busy and save");
                                 }
                             }
                         } else {
@@ -449,6 +451,7 @@ public class BookingActivity extends AppCompatActivity {
 
                 });
 
+        return isBusySave;
     }
 
 
