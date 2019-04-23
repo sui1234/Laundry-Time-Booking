@@ -153,10 +153,10 @@ public class HomeFragment extends Fragment {
                 AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
 
                 if (timeResult != null) {
-                    alert.setMessage("Vill du avboka tid  " + timeResult + " ?")
+                    alert.setMessage(getResources().getString(R.string.cancel_sentence) + " "+ timeResult + " ?")
 
                             .setCancelable(false)
-                            .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                            .setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
 
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -178,7 +178,7 @@ public class HomeFragment extends Fragment {
 
                             })
 
-                            .setNegativeButton("Nej", new DialogInterface.OnClickListener() {
+                            .setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
 
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -191,7 +191,7 @@ public class HomeFragment extends Fragment {
 
                             });
 
-                    alert.setTitle("Avboka");
+                    alert.setTitle(getResources().getString(R.string.to_cancel));
 
                     alert.show();
 

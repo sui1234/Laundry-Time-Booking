@@ -1,21 +1,26 @@
 <resources>
     <string name="app_name">My TBooking</string>
-    <string name="title_home">Home</string>
-    <string name="title_profile">Profile</string>
+    <string name="title_home">Hem</string>
+    <string name="title_profile">Profil</string>
     <string name="title_my_booking">Mina bokningar</string>
     <string name="title_booking">Bokning</string>
 
-    <string name="title_date">Datum</string>
-    <string name="title_time">Tid</string>
     <string name="save">Spara</string>
-    <string name="cancel">Cancel</string>
+    <string name="cancel">Avbryta</string>
     <string name="choose_period">Välj period</string>
     <string name="T_bokning">T-Bokning</string>
-    <string name="registrera">Registrera dig</string>
-    <string name="logga_in"> Logga in</string>
+    <string name="register">Registrera dig</string>
+    <string name="log_in"> Logga in</string>
     <string name="hint_email">E-post</string>
     <string name="hint_lösenord">Lösenord</string>
     <string name="hint_bostad_number">Address</string>
-    <string name="hint_name">Name </string>
+    <string name="hint_name">Namn </string>
     <string name="logout"> Logga ut</string>
+    <string name="have_time"> Du har redan en bokad tid</string>
+    <string name="cancel_sentence"> Vill du avboka </string>
+    <string name="yes">Ja</string>
+    <string name="no">Nej</string>
+    <string name="to_cancel">Avboka</string>
+
+
 </resources>

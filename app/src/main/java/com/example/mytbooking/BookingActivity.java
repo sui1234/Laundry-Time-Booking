@@ -185,16 +185,13 @@ public class BookingActivity extends AppCompatActivity {
 
                     case R.id.save:
 
-
                         Log.d("SUI boolean", String.valueOf(haveBooked));
 
                         if (haveBooked() == false) {
                             if (year != 0 && selectedTime != null) {
                                 Log.d("DAVID", "Save");
 
-
                                 Intent intent1 = new Intent(BookingActivity.this, MyBookingsActivity.class);
-
                                 intent1.putExtra("date", date1 + "   " + selectedTime);
 
                                 /*if (activeBooking != null) {
@@ -206,23 +203,20 @@ public class BookingActivity extends AppCompatActivity {
                                 startActivity(intent1);
                                 break;
                             } else {
-                                Toast.makeText(BookingActivity.this, "Välj period", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.choose_period), Toast.LENGTH_LONG).show();
                                 break;
                             }
 
                         } else {
-                            Toast.makeText(BookingActivity.this, "Du har redan en bokad tid", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.have_time), Toast.LENGTH_LONG).show();
                         }
-
                     default:
                         break;
                 }
-
             }
         };
         cancelView.setOnClickListener(listener);
         saveView.setOnClickListener(listener);
-
 
     }
 
@@ -234,7 +228,6 @@ public class BookingActivity extends AppCompatActivity {
         String dayCurrent = Integer.toString(calendar.get(Calendar.DATE));
         String daySelected = Integer.toString(selectedDate.getDay());
         int hourCurrent = calendar.get(Calendar.HOUR_OF_DAY);
-
 
         Log.d("SUI dayCurrent ", dayCurrent);
 
@@ -294,7 +287,6 @@ public class BookingActivity extends AppCompatActivity {
                                     Log.d("Sui", stringSelectedDate + " 07.00 -11.00 is busy");
 
                                 } else if (document.getData().get("time").toString().replaceAll(" ", "").contains("11.00-15.00") == true) {
-
 
                                     setButtonDisabled(1);
                                     Log.d("Sui", stringSelectedDate + " 11.00 -15.00 is busy");

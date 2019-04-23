@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My TBooking</string>
+    <string name="title_home">Home</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_my_booking">My bookings</string>
+    <string name="title_booking">Booking</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="choose_period">Choose period</string>
+    <string name="T_bokning">T-Bokning</string>
+    <string name="register">Register</string>
+    <string name="log_in"> Log in</string>
+    <string name="hint_email">E-post</string>
+    <string name="hint_lösenord">Password</string>
+    <string name="hint_bostad_number">Address</string>
+    <string name="hint_name">Name </string>
+    <string name="logout"> Log out</string>
+    <string name="have_time"> You have already booked a time</string>
+    <string name="cancel_sentence"> Do you want to cancel </string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="to_cancel">Cancel</string>
+
+</resources>

@@ -6,15 +6,12 @@ public class Booking {
     String time;
     String id;
 
-
     public void Booking(){}
 
     public Booking(String name, String date,String time) {
         this.name = name;
         this.date = date;
         this.time = time;
-
-
     }
 
     public String getName() {
@@ -22,7 +19,6 @@ public class Booking {
     }
 
     public String getDate() {
-
         return date;
     }
 

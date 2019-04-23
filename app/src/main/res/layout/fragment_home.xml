@@ -26,15 +26,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="80dp"
         android:gravity="center"
-
-
-
         android:background="@drawable/textview_bg"
-
         android:layout_gravity="center"/>
-
-
-
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
