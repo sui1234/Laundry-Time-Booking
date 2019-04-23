@@ -52,7 +52,6 @@ public class ProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_profile, null);
 
         emailView = view.findViewById(R.id.profile_edit_email);
-        nameView = view.findViewById(R.id.profile_edit_name);
         addressView = view.findViewById(R.id.profile_edit_address);
         titleNameView = view.findViewById(R.id.textView);
 
@@ -138,7 +137,7 @@ public class ProfileFragment extends Fragment {
                                 name = document.getData().get("name").toString();
 
                                 Log.d("SUI name", name);
-                                nameView.setText("Name:  " + name);
+                                //nameView.setText("Name:  " + name);
                                 titleNameView.setText(name);
 
 

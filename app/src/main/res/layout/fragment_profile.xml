@@ -43,39 +43,28 @@
         android:id="@+id/profile_edit_email"
         android:paddingLeft="10dp"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="80dp"
         android:textSize="20dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="230dp"
         android:gravity="center_vertical"
         android:background="#E4E4E4"
         android:textColor="#171616"
        />
+
     <TextView
         android:id="@+id/profile_edit_address"
-        android:paddingLeft="10dp"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="320dp"
 
-        android:textSize="20dp"
-        android:textColor="#171616"
-        android:layout_marginTop="280dp"
-        android:gravity="center_vertical"
         android:background="#E4E4E4"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:textColor="#171616"
+        android:textSize="20dp"
 
         />
-    <TextView
-        android:id="@+id/profile_edit_name"
-        android:paddingLeft="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
 
-        android:textSize="20dp"
-        android:textColor="#171616"
-        android:layout_marginTop="360dp"
-        android:gravity="center_vertical"
-        android:background="#E4E4E4"
-
-        />
 
 
 
