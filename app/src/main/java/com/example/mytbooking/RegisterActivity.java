@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -92,6 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d("!!!","user");
 
 
+
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -107,12 +109,17 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                     CollectionReference dbUser = db.collection("user");
+
+
+
                     User user = new User(
                             email,
                             name,
                             homeNumber
                     );
                     dbUser.add(user);
+                    //FirebaseAnalytics mFirebaseAnalytics = null;
+                    //mFirebaseAnalytics.setUserId(auth.getCurrentUser().getUid());
 
                 } else {
                     Log.d("!!!", "create user failed" , task.getException());

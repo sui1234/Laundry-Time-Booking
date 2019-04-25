@@ -1,21 +1,21 @@
 package com.example.mytbooking;
 
 public class Booking {
-    String name;
+
     String date;
     String time;
     String id;
 
     public void Booking(){}
 
-    public Booking(String name, String date,String time) {
-        this.name = name;
+    public Booking(String id, String date,String time) {
+        this.id = id;
         this.date = date;
         this.time = time;
     }
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
     public String getDate() {
@@ -25,6 +25,4 @@ public class Booking {
     public String getTime() {
         return time;
     }
-
-    public String getId(){return id;}
 }

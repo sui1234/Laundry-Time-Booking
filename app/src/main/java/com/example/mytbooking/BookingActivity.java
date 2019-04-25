@@ -360,7 +360,7 @@ public class BookingActivity extends AppCompatActivity {
     public boolean haveBooked() {
 
         Query queryTime = db.collection("booking")
-                .whereEqualTo("name", auth.getCurrentUser().getUid());
+                .whereEqualTo("id", auth.getCurrentUser().getUid());
 
         queryTime.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
